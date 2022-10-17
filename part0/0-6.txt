@@ -1,0 +1,11 @@
+# This code can be used on https://www.websequencediagrams.com/
+title 0.6 Single Page App
+
+note over browser:
+user enters data in form input and presses save
+end note
+browser->server HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server->browser 201 (Success): {"message":"note created"}
+note over browser:
+js-code re-renders data
+end note

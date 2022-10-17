@@ -1,0 +1,22 @@
+# This code can be used on https://www.websequencediagrams.com/
+title 0.4 New Note
+
+note over browser:
+User enters data into form input field and presses submit 
+end note
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+server->browser: 302 redirect to /exampleapp/notes
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server->browser: HTML-code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+note over browser:
+js-code requests notes data in json format
+end note
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{"content":"ohhhhh","date":"2022-10-17T06:23:38.761Z"}, ...]
+note over browser:
+event handler in js-code renders notes using fetched data
+end note 
