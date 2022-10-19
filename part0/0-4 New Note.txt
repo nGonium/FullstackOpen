@@ -1,5 +1,5 @@
 # This code can be used on https://www.websequencediagrams.com/
-title 0.4 New Note
+title 0-4 New Note
 
 note over browser:
 User enters data into form input field and presses submit 
