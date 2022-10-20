@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import personsService from './services/personsService'
 
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -13,8 +13,9 @@ const App = () => {
   const [searchName, setSearchName] = useState('')
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons')
-    .then(res => setPersons(res.data))
+    personsService.getAll()
+    .then(data => setPersons(data))
+    .catch(res => console.error(`Could not load data`, res))
   }, [])
 
   return (
@@ -32,6 +33,7 @@ const App = () => {
       <h3>Number</h3>
       <Persons 
         persons={persons} 
+        setPersons={setPersons}
         searchName={searchName} />
     </div>
   )
