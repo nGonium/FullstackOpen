@@ -12,7 +12,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearchName] = useState('')
-  const [notification, setNotification] = useState({text: 'Testing error', type: 'error'})
+  const [notification, setNotification] = useState(null)
 
   // Persons functions
   const updatePerson = (id, person) => {
@@ -63,12 +63,6 @@ const App = () => {
       .catch(res => console.error(`Could not load data`, res))
   }, [])
 
-  // Handlers
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    addPerson()
-  }
-
   return (
     <div>
       <h2>Phonebook</h2>
@@ -80,7 +74,7 @@ const App = () => {
       <PersonForm 
         newName={newName} setNewName={setNewName} 
         newNumber={newNumber} setNewNumber={setNewNumber} 
-        handleSubmit={handleSubmit} />
+        addPerson={addPerson} />
       <h3>Number</h3>
       <Persons 
         persons={persons} 
