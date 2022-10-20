@@ -1,0 +1,26 @@
+# Get info
+GET http://localhost:3001/info
+
+###
+# Get existing array
+GET http://localhost:3001/api/persons
+
+###
+# Get existing person
+GET http://localhost:3001/api/persons/1
+
+###
+# Delete existing person
+DELETE http://localhost:3001/api/persons/5
+###
+# GET http://localhost:3001/api/persons/5
+
+###
+# Post unique person
+POST http://localhost:3001/api/persons/
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "number": "01234-5678"
+}

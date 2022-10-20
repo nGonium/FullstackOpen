@@ -1,0 +1,44 @@
+# Get non existing path
+GET http://localhost:3001/api/notAPath
+
+###
+# Get non existing resource
+GET http://localhost:3001/api/persons/-1
+
+###
+# Delete non existing resource
+DELETE  http://localhost:3001/api/persons/-1
+
+###
+# Post missing fields
+POST http://localhost:3001/api/persons/
+Content-Type: application/json
+
+{
+  "number": "999"
+}
+
+###
+# Post existing name
+POST http://localhost:3001/api/persons/
+Content-Type: application/json
+
+{
+  "name": "Arto Hellas", 
+  "number": "040-123456"
+}
+
+###
+# Post without content 
+POST http://localhost:3001/api/persons/
+Content-Type: application/json
+
+###
+# Post inappropriate or missing headers
+POST http://localhost:3001/api/persons/
+Content-Type: text/plain
+
+{
+  "name": "John Doe",
+  "number": "01234-5678"
+}
