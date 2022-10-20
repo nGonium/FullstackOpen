@@ -1,13 +1,18 @@
 import personsService from "../services/personsService"
 
-const PersonForm = ({persons, setPersons, newName, setNewName, newNumber, setNewNumber}) => {
+const PersonForm = ({persons, setPersons, newName, setNewName, newNumber, setNewNumber, setNotification}) => {
   const handleNewName = (e) => setNewName(e.target.value)
   const handleNewNumber = (e) => setNewNumber(e.target.value)
 
   const updatePerson = (id, person) => {
     personsService.update(id, person)
-    .then(newPerson => setPersons(persons.map(p => p.id === id ? newPerson : p)))
-    .catch(res => console.error(res))
+    .then(newPerson => {
+      setPersons(persons.map(p => p.id === id ? newPerson : p))
+      setNotification({ text: `Updated number of ${newPerson.name}`, type: 'success' })
+    })
+    .catch(res => { 
+      setNotification({ text: `Failed to update number of person`, type: 'error' })
+    })
   }
 
   const addPerson = (e) => {
@@ -23,8 +28,11 @@ const PersonForm = ({persons, setPersons, newName, setNewName, newNumber, setNew
     personsService.create({ 
       name: newName, 
       number: newNumber, 
-    }).then(newPerson => setPersons(persons.concat(newPerson)))
-    .catch(res => console.error(res))
+    }).then(newPerson => {
+      setPersons(persons.concat(newPerson))
+      setNotification({ text: `Added ${newPerson.name}`, type: 'success' })
+    })
+    .catch(res => setNotification({ text: `Failed to add ${newName}`, type: 'error' }))
   }
 
   return (
