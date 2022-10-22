@@ -1,0 +1,29 @@
+### +Post unique person
+POST http://localhost:3001/api/persons/
+Content-Type: application/json
+
+{
+  "name": "Valid personss",
+  "number": "01-56780000"
+}
+
+### -Post missing fields
+POST http://localhost:3001/api/persons/
+Content-Type: application/json
+
+{
+  "name": "Invalid person"
+}
+
+### -Post missing body
+POST http://localhost:3001/api/persons/
+Content-Type: application/json
+
+### -Post invalid header
+POST http://localhost:3001/api/persons/
+Content-Type: text/plain
+
+{
+  "name": "Invalid person",
+  "number": "01234-5678"
+}

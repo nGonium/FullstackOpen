@@ -21,8 +21,10 @@ const App = () => {
       setPersons(persons.map(p => p.id === id ? newPerson : p))
       setNotification({ text: `Updated number of ${newPerson.name}`, type: 'success' })
     })
-    .catch(() => 
-      setNotification({ text: `Failed to update number of person`, type: 'error' }))
+    .catch((err) => {
+      console.log(err.response.data.error)
+      setNotification({ text: err.response.data.error, type: 'error' })
+    })
   }
 
   const addPerson = () => {
@@ -40,8 +42,9 @@ const App = () => {
       setPersons(persons.concat(newPerson))
       setNotification({ text: `Added ${newPerson.name}`, type: 'success' })
     })
-    .catch(() => 
-      setNotification({ text: `Failed to add ${newName}`, type: 'error' }))
+    .catch((err) => {
+      setNotification({ text: err.response.data.error, type: 'error' })
+    })
   }
 
   const removePerson = (id, name) => {

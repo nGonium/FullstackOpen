@@ -1,0 +1,26 @@
+### +Update existing person number
+PUT http://localhost:3001/api/persons/6352ee35ed54b8105f165669
+Content-Type: application/json
+
+{
+  "name": "DO NOT DELETE ",
+  "number": "0"
+} 
+
+### -Update existing person field invalid (too short)
+PUT http://localhost:3001/api/persons/6352ee35ed54b8105f165669
+Content-Type: application/json
+
+{
+  "name": "X"
+} 
+
+### -Update non-existing person
+# Fails quietly
+PUT http://localhost:3001/api/persons/6352c77ff6d76fab6a3c6010
+Content-Type: application/json
+
+{
+  "name": "DO NOT DELETE ",
+  "number": "0"
+} 
