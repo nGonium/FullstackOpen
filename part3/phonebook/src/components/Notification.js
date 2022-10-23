@@ -1,8 +1,15 @@
+import { useEffect } from "react"
 // Accepted types: error, success
 const Notification = ({ notification, setNotification }) => {
+  const TIMEOUT_TIME = 5000
+  useEffect(() => {
+    if (notification) {
+      setTimeout(() => setNotification(null), TIMEOUT_TIME)
+    }
+  }, [notification, setNotification])
+  
   if (notification === null) return null
   
-  const TIMEOUT_TIME = 5000
   const { text, type } = notification
   const color = 
     type === 'error' ? 'red' 
@@ -19,7 +26,7 @@ const Notification = ({ notification, setNotification }) => {
     display: 'block',
     backgroundColor: '#ccc',
   }
-  setTimeout(() => setNotification(null), TIMEOUT_TIME)
+
   return <p style={notificationStyle}>{text}</p>
 }
 

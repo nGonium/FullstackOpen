@@ -16,35 +16,37 @@ const App = () => {
 
   // Persons functions
   const updatePerson = (id, person) => {
-    personsService.update(id, person)
-    .then(newPerson => {
-      setPersons(persons.map(p => p.id === id ? newPerson : p))
-      setNotification({ text: `Updated number of ${newPerson.name}`, type: 'success' })
-    })
-    .catch((err) => {
-      console.log(err.response.data.error)
-      setNotification({ text: err.response.data.error, type: 'error' })
-    })
+    personsService
+      .update(id, person)
+      .then(newPerson => {
+        setPersons(persons.map(p => p.id === id ? newPerson : p))
+        setNotification({ text: `Updated number of ${newPerson.name}`, type: 'success' })
+      })
+      .catch((err) => {
+        setNotification({ text: err.response.data.error, type: 'error' })
+      })
   }
 
   const addPerson = () => {
-    const existingPerson = persons.filter(p => p.name === newName)[0]
+    const existingPerson = persons.find(p => p.name === newName)
     if (existingPerson) {
       if (window.confirm(`${existingPerson.name} is already added to phonebook, replace the old number with a new one?`))
         updatePerson(existingPerson.id, { ...existingPerson, number: newNumber })
       return
     }
 
-    personsService.create({ 
-      name: newName, 
-      number: newNumber, 
-    }).then(newPerson => {
-      setPersons(persons.concat(newPerson))
-      setNotification({ text: `Added ${newPerson.name}`, type: 'success' })
-    })
-    .catch((err) => {
-      setNotification({ text: err.response.data.error, type: 'error' })
-    })
+    personsService
+      .create({ 
+        name: newName, 
+        number: newNumber, 
+      })
+      .then(newPerson => {
+        setPersons(persons.concat(newPerson))
+        setNotification({ text: `Added ${newPerson.name}`, type: 'success' })
+      })
+      .catch((err) => {
+        setNotification({ text: err.response.data.error, type: 'error' })
+      })
   }
 
   const removePerson = (id, name) => {
