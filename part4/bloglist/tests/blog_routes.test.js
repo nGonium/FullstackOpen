@@ -1,15 +1,14 @@
+const mongoose = require('mongoose')
 const request = require('supertest')
 const app = require('../app')
 const hf = require('./blog_routes_helper')
 const Blog = require('../models/blog')
-const mongoose = require('mongoose')
-// const { constants } = require('picomatch')
-// const { insertMany } = require('../models/blog')
+
 
 const api = request(app)
 
 beforeEach(async () => {
-  await Blog.collection.drop()
+  await Blog.deleteMany({})
   await Blog.insertMany(hf.initialBlogs)
 })
 
@@ -17,8 +16,12 @@ afterAll(() => {
   mongoose.connection.close()
 })
 
+describe('Valid token bearing user with blogposts', () => {
+  
+})
+
 describe('get blogs', () => {
-  it('succeeds with 200 and JSON content type', () => {
+  it.only('succeeds with 200 and JSON content type', () => {
     api.get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /json/)
