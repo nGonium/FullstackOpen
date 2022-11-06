@@ -1,21 +1,13 @@
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
-const User = require('../models/User')
+const auth = require('../utils/auth')
 const loginRouter = require('express').Router()
 
 loginRouter.post('/', async (req, res) => {
   const { username, password } = req.body
-  const user = await User.findOne({ username })
-  const isValidCredentials = user === null 
-    ? false 
-    : await bcrypt.compare(password, user.passwordHash)
-  if (!isValidCredentials) {
-    return res.status(401).json({ error: "username/password invalid" })
-  }
-  const token = jwt.sign({ username: user.username, id: user._id }, process.env.SECRET)
+  const token = await auth.getToken(username, password)
+  if (token === null) return res.status(401).json({ error: "username/password invalid" })
   res
     .status(200)
-    .send({ token, username: user.username, name: user.name })
+    .send({ token })
 })
 
 module.exports = loginRouter

@@ -18,7 +18,7 @@ const userSchema = new Schema({
 userSchema.set('toJSON', {
   transform: (doc, ret) => {
     ret.id = doc._id
-    delete ret.password
+    delete ret.passwordHash
     delete ret.__v
     delete ret._id
   }

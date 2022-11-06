@@ -1,50 +1,7 @@
 if (process.env.NODE_ENV !== 'test') throw new Error('Tried to run test helper without setting NODE_ENV to test') 
-const Blog = require("../models/blog");
+const Blog = require("../models/Blog");
 const User = require("../models/User");
-
-// User
-// blog
-
-// const clearDb = () => {
-//   Promise.all([User.deleteMany({}), Blog.deleteMany({})])
-// }
-
-// const createBlog = async (user, concat = '') => {
-//   const template = {
-//     title: `Blog title${concat}`,
-//     author: `Generated Author`,
-//     url: 'www.example.com',
-//     user: user.id,
-//   }
-//   const newBlog = new blog(template)
-//   const savedBlog = await doc.save()
-//   user.blogs = user.blogs.concat(savedBlog.id) 
-//   const savedUser = await user.save()
-//   return savedBlog
-// }
-
-// const createUser = async (concat = '') => {
-//   const template = {
-//     username: `generated-user${concat}`,
-//     password: `password${concat}`,
-//     name: `generated user${concat}`,
-//   }
-//   const newUser = new User(template)
-//   return newUser.save()
-// }
-
-// const initDb = async () => {
-//   const userWithBlogs = await createUser()
-//   for (i = 0; i < 3; i++) {
-//     await createBlog(userWithBlogs)
-//   }
-  
-// }
-
-// const Blog = require('../models/blog')
-
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const auth = require('../utils/auth')
 
 const initialBlogs = [
   {
@@ -76,7 +33,7 @@ const initialBlogs = [
 const nonexistingUserId = async () => {
   const user = new User({
     username: "deleteduser",
-    password: "deletedpassword",
+    passwordHash: "deletedpassword",
     name: "Deleted User"
   })
   await user.save()
@@ -90,7 +47,7 @@ const nonexistingUserId = async () => {
  * @returns ID of new user 
  */
 const existingUserId = async (password) => {
-  const passwordHash = await bcrypt.hash(password, 10)
+  const passwordHash = await auth.hashPassword(password)
   const user = new User({
     username: "existinguser",
     passwordHash,
@@ -98,15 +55,6 @@ const existingUserId = async (password) => {
   })
   await user.save()
   return user._id.toString() 
-}
-
-/**
- * Get a signed JSONWebToken encoding username and _id for the User
- * @param {Document} [user] Mongoose document, defaults to a newly created user 
- * @returns {string} Signed JSONWebToken string
- */
-const getToken = (user) => {
-  return jwt.sign({ username: user.username, id: user._id }, process.env.SECRET)
 }
 
 const nonexistingBlogId = async () => {
@@ -127,9 +75,10 @@ const existingBlogId = async () => {
     author: 'Veritas',
     url: 'http://www.test.com',
     likes: 0,
+    user: '6367e89f731611776fd12350',
   })
-  await blog.save()
-  return blog._id.toString()
+  const savedBlog = await blog.save()
+  return savedBlog._id.toString()
 }
 
 const usersInDb = async () => {
@@ -142,6 +91,14 @@ const blogsInDb = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
+const createBlog = async (user, blog) => {
+  const newBlog = new Blog({ ...blog, user: user._id })
+  user.blogs = user.blogs.concat(newBlog._id)
+  const blogPromise = newBlog.save()
+  await Promise.all[blogPromise, user.save()]
+  return blogPromise
+}
+
 module.exports = {
   initialBlogs, 
   nonexistingBlogId, 
@@ -150,5 +107,5 @@ module.exports = {
   nonexistingUserId,
   existingUserId, 
   usersInDb,
-  getToken,
+  createBlog
 }
