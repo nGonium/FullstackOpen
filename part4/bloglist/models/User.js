@@ -5,14 +5,13 @@ const userSchema = new Schema({
     type: [Schema.Types.ObjectId], 
     ref: 'Blog', 
     default: [], 
-    required: true 
   },
   username: { 
     type: String, 
     required: true,
     minLength: 3,
   },
-  password: { type: String, required: true },
+  passwordHash: { type: String, required: true },
   name: { type: String, required: true },
 })
 

@@ -1,9 +1,7 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/User')
-const jwt = require('jsonwebtoken')
 const middleware = require('../utils/middleware')
-const { Error } = require('mongoose')
+require('express-async-errors')
 
 blogsRouter.get('/', async (req, res) => {
   const blogs = await Blog.find({}).populate('user')
