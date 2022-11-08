@@ -1,11 +1,10 @@
 const mongoose = require('mongoose')
 const request = require('supertest')
 const app = require('../app')
-const db = require('./db')
+const db = require('./helpers/db')
 const Blog = require('../models/Blog')
 const User = require('../models/User')
 const auth = require('../utils/auth')
-
 
 const api = request(app)
 
@@ -25,14 +24,14 @@ describe('get blogs', () => {
       .expect('Content-Type', /json/)
   })
 
-  it('returns correct amount of JSON objects', async () => {
+  it('returns correct amount of blogs', async () => {
     await api.get('/api/blogs')
       .expect(res => res.body.length === db.initialBlogs.length)
   })
 
-  it('all have a unique id', async () => {
+  it('all have an id', async () => {
     const res = await api.get('/api/blogs')
-    res.body.forEach(b => expect(b).toBeDefined())
+    res.body.forEach(blog => expect(blog.id).toBeDefined())
   })  
 })
 
@@ -125,8 +124,56 @@ describe('create blog', () => {
   })
 })
 
+describe('update blog', () => {
+  it('without valid token fails with 401 Unauthorized', async () => {
+    const blogid = await db.existingBlogId()
+    const token = 'gibberishToken'
+    await api.put(`/api/blogs/${blogid}`)
+      .set('Authorization', `bearer ${token}`)
+      .expect(401)
+  })
+  describe('bearing valid token', () => {
+    let user, authorization
+    beforeEach(async function initUser() {
+      user = await db.existingUser()
+      const token = auth.getTokenNoValidation(user)
+      authorization = `bearer ${token}`
+    }) 
+    it('token (user) id not matching blog id fails with 403 Forbidden', async () => {
+      const blogid = await db.existingBlogId()
+      api.put(`/api/blogs/${blogid}`)
+        .set('Authorization', authorization)
+        .send(db.validBlogDoc)
+        .expect(403)
+    })
+    describe('with valid payload succeeds', () => {
+      let res 
+      beforeEach(async () => {
+        const blogDoc = db.validBlogDoc
+        const blog = await db.createBlog(user, blogDoc)
+        res = api.put(`/api/blogs/${blog._id}`)
+          .set('Authorization', authorization)
+          .send({ title: "Updated title" })
+      })
+      it('with 200 and JSON', async () => {
+        await res.expect(200).expect('Content-Type', /json/)
+      })
+      it('returns object with updated title', async () => {
+        const { title } = (await res).body
+        expect(title).toBe("Updated title")
+      })
+    })
+  })
+})
+
 
 describe('delete blog', () => {
+  it('deleting existing blog without valid token fails with 401 Unauthorized', async () => {
+    const blogid = db.existingBlogId()
+    await api.delete(`/api/blogs/${blogid}`)
+      .expect(401)
+  })
+
   describe('valid token bearing user with blog post', () => {
     let authorization
     let blogid 
@@ -164,12 +211,10 @@ describe('delete blog', () => {
         .expect(403)
     })
   })
+})
 
-  it('deleting existing blog without valid token fails with 401 Unauthorized', async () => {
-    const blogid = db.existingBlogId()
-    await api.delete(`/api/blogs/${blogid}`)
-      .expect(401)
-  })
+
+
 
   //   describe('with missing field', () => {
   //     it('likes defaults to 0', async () => {
@@ -219,7 +264,6 @@ describe('delete blog', () => {
   //       .expect(401)
   //   })
   // })
-})
 
 // -----------
 

@@ -1,7 +1,7 @@
 if (process.env.NODE_ENV !== 'test') throw new Error('Tried to run test helper without setting NODE_ENV to test') 
-const Blog = require("../models/Blog");
-const User = require("../models/User");
-const auth = require('../utils/auth')
+const Blog = require("../../models/Blog");
+const User = require("../../models/User");
+const auth = require('../../utils/auth')
 
 const initialBlogs = [
   {
@@ -41,19 +41,23 @@ const nonexistingUserId = async () => {
   return user._id.toString()
 }
 
-/**
- * Creates new user with te given password, then returns its id after saving
- * @param {string} password Plaintext password
- * @returns ID of new user 
- */
-const existingUserId = async (password) => {
+const existingUser = async (password = 'password') => {
   const passwordHash = await auth.hashPassword(password)
   const user = new User({
     username: "existinguser",
     passwordHash,
     name: "Deleted User"
   })
-  await user.save()
+  return user.save()
+}
+
+/**
+ * Creates new user with te given password, then returns its id after saving
+ * @param {string} password Plaintext password
+ * @returns ID of new user 
+ */
+const existingUserId = async (password = 'password') => {
+  const user = await existingUser(password)
   return user._id.toString() 
 }
 
@@ -95,8 +99,14 @@ const createBlog = async (user, blog) => {
   const newBlog = new Blog({ ...blog, user: user._id })
   user.blogs = user.blogs.concat(newBlog._id)
   const blogPromise = newBlog.save()
-  await Promise.all[blogPromise, user.save()]
+  await blogPromise, 
+  await user.save()
   return blogPromise
+}
+
+const validBlogDoc = {
+  title: "A valid blog",
+  url: "www.x.com",
 }
 
 module.exports = {
@@ -106,6 +116,8 @@ module.exports = {
   blogsInDb,
   nonexistingUserId,
   existingUserId, 
+  existingUser,
   usersInDb,
-  createBlog
+  createBlog,
+  validBlogDoc,
 }
