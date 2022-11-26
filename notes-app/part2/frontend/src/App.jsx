@@ -26,7 +26,7 @@ function App() {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('error');
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const displayedNotes = showAll
     ? notes
