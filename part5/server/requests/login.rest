@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### Post blog for user tester 
-POST http://localhost:3000/api/login
+POST http://localhost:3000/api/blogs
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlciIsImlkIjoiNjM4OGE3NDg2MGZkNDJmY2MyNWEyMWNkIiwiaWF0IjoxNjY5OTAwMTYyfQ.yUyGE8lYfEe1M0lkf9PZz8d1l6D0_2WmreYFXqS5LWE
 

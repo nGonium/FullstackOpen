@@ -30,6 +30,7 @@ const BlogForm = ({ onCreateBlog }) => {
 
   return (
     <form onSubmit={(e) => onCreateBlog(e, { title, author, url })}>
+      <h3>Add Blog</h3>
       {Object.keys(formdata).map((field) => (
         <FormField
           key={field}

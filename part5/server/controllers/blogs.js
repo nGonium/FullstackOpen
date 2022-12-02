@@ -21,6 +21,7 @@ router.post('/', async (request, response) => {
   const blog = new Blog({ ...request.body, user: user.id });
 
   const savedBlog = await blog.save();
+  await savedBlog.populate('user');
 
   user.blogs = user.blogs.concat(savedBlog._id);
   await user.save();
@@ -52,7 +53,7 @@ router.put('/:id', async (request, response) => {
     new: true,
     runValidators: true,
     context: 'query',
-  });
+  }).populate('user');
 
   response.json(updatedBlog);
 });
