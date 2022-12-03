@@ -49,9 +49,6 @@ const Blog = ({ blog, handleUpdateBlog, deleteBlog, currentUser }) => {
       </div>
     )
   }
-  // <div>
-  //   {blog.title} - {blog.author} {isExpanded ? <button>hide</button> : <button>view</button>}
-  // </div>
 }
 
 export default Blog

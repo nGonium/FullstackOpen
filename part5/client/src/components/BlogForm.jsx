@@ -1,22 +1,22 @@
-import { useState } from 'react';
-import blogService from '../services/blogs';
-import FormField from './FormField';
+import { useState } from "react"
+// import blogService from "../services/blogs"
+import FormField from "./FormField"
 
 const BlogForm = ({ onCreateBlog }) => {
   const [formdata, setFormData] = useState({
-    title: '',
-    author: '',
-    url: '',
-  });
+    title: "",
+    author: "",
+    url: "",
+  })
 
-  const { title, author, url } = formdata;
+  const { title, author, url } = formdata
 
   const handleFieldInput = (e) => {
     setFormData((fd) => ({
       ...fd,
       [e.target.name]: e.target.value,
-    }));
-  };
+    }))
+  }
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -41,7 +41,7 @@ const BlogForm = ({ onCreateBlog }) => {
       ))}
       <button type="submit">create</button>
     </form>
-  );
-};
+  )
+}
 
-export default BlogForm;
+export default BlogForm

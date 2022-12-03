@@ -1,21 +1,21 @@
-import { useState } from 'react';
-import FormField from './FormField';
+import { useState } from "react"
+import FormField from "./FormField"
 
-const LoginForm = ({ setUser, onLogin }) => {
+const LoginForm = ({ onLogin }) => {
   const [data, setData] = useState({
-    username: '',
-    password: '',
-  });
+    username: "",
+    password: "",
+  })
 
-  const { username, password } = data;
+  const { username, password } = data
 
   const onFieldInput = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setData((d) => ({
       ...d,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   return (
     <form onSubmit={(e) => onLogin(e, { username, password })}>
@@ -29,7 +29,7 @@ const LoginForm = ({ setUser, onLogin }) => {
       ))}
       <button type="submit">login</button>
     </form>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm
