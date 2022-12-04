@@ -20,7 +20,10 @@ const Blog = ({ blog, handleUpdateBlog, deleteBlog, currentUser }) => {
   if (!isExpanded) {
     return (
       <div>
-        {title} - {author} <button onClick={toggleExpanded}>show</button>
+        {title} - {author}{" "}
+        <button data-testid="btn-toggleExpanded" onClick={toggleExpanded}>
+          show
+        </button>
       </div>
     )
   } else {
@@ -35,6 +38,7 @@ const Blog = ({ blog, handleUpdateBlog, deleteBlog, currentUser }) => {
         <p>
           likes {likes}
           <button
+            data-testid="btn-like"
             onClick={(e) => handleUpdateBlog(e, blog, { likes: likes + 1 })}
           >
             like
