@@ -54,12 +54,12 @@ describe("Blog - Component Test", () => {
     screen.findByText(blog.likes, { exact: false })
   })
   it("should should call handler twice if like button is pressed twice", async () => {
-    const handleUpdateBlog = jest.fn()
+    const updateBlog = jest.fn()
     render(
       <Blog
         blog={blog}
         currentUser={{}}
-        handleUpdateBlog={handleUpdateBlog}
+        updateBlog={updateBlog}
         deleteBlog={jest.fn()}
       />
     )
@@ -69,6 +69,6 @@ describe("Blog - Component Test", () => {
     const likeBtn = screen.getByTestId("btn-like")
     await user.click(likeBtn)
     await user.click(likeBtn)
-    expect(handleUpdateBlog.mock.calls).toHaveLength(2)
+    expect(updateBlog.mock.calls).toHaveLength(2)
   })
 })

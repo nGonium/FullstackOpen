@@ -2,14 +2,12 @@ import { useState } from "react"
 // import blogService from "../services/blogs"
 import FormField from "./FormField"
 
-const BlogForm = ({ onCreateBlog }) => {
+const BlogForm = ({ createBlog }) => {
   const [formdata, setFormData] = useState({
     title: "",
     author: "",
     url: "",
   })
-
-  const { title, author, url } = formdata
 
   const handleFieldInput = (e) => {
     setFormData((fd) => ({
@@ -18,18 +16,13 @@ const BlogForm = ({ onCreateBlog }) => {
     }))
   }
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await blogService.postBlog({ title, author, url });
-  //     onBlogC
-  //   } catch (err) {
-  //     console.error(err.response.data.error);
-  //   }
-  // };
-
   return (
-    <form onSubmit={(e) => onCreateBlog(e, { title, author, url })}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        createBlog(formdata)
+      }}
+    >
       <h3>Add Blog</h3>
       {Object.keys(formdata).map((field) => (
         <FormField

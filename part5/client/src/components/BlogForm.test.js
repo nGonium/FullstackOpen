@@ -4,13 +4,26 @@ import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import BlogForm from "./BlogForm"
 
+const typeFields = async (user, form, data) => {
+  for (let field in data) {
+    await user.type(form.querySelector(`input[name="${field}"]`), data[field])
+  }
+}
+
 describe("BlogForm - Component Test", () => {
-  it("should call event handler when new blog is created", async () => {
-    const handleCreateBlog = jest.fn()
-    const { container } = render(<BlogForm onCreateBlog={handleCreateBlog} />)
+  it("should call createBlog with form data when new blog is created", async () => {
+    const testData = {
+      author: "Test Author",
+      title: "Hello World",
+      url: "wwwexom",
+    }
+    const createBlog = jest.fn()
+    const { container } = render(<BlogForm createBlog={createBlog} />)
     const user = userEvent.setup()
+    await typeFields(user, container, testData)
     await user.click(container.querySelector('button[type="submit"]'))
-    expect(handleCreateBlog.mock.calls).toHaveLength(1)
-    expect(test)
+    expect(createBlog.mock.calls[0][0]).toEqual(
+      expect.objectContaining(testData)
+    )
   })
 })

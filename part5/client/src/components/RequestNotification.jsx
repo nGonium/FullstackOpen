@@ -11,6 +11,7 @@ const RequestNotification = ({ status, message }) => {
 
   return (
     <div
+      data-testid="request-notification"
       style={{
         backgroundColor: "lightgray",
         borderColor: messageColor,

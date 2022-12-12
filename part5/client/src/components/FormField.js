@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types"
 
-const FormField = ({ name, value = '', onFieldInput }) => {
+const FormField = ({ name, value, onFieldInput }) => {
   return (
     <div>
       {name}

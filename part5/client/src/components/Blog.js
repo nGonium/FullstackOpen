@@ -1,5 +1,4 @@
 import { useState } from "react"
-// import blogService from '../services/blogs';
 
 const blogStyle = {
   padding: "0.4em 0.4em",
@@ -9,7 +8,7 @@ const blogStyle = {
   marginBottom: 5,
 }
 
-const Blog = ({ blog, handleUpdateBlog, deleteBlog, currentUser }) => {
+const Blog = ({ blog, updateBlog, deleteBlog, currentUser }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const toggleExpanded = () => {
     setIsExpanded((is) => !is)
@@ -19,27 +18,37 @@ const Blog = ({ blog, handleUpdateBlog, deleteBlog, currentUser }) => {
 
   if (!isExpanded) {
     return (
-      <div>
-        {title} - {author}{" "}
-        <button data-testid="btn-toggleExpanded" onClick={toggleExpanded}>
+      <div data-testid="blog__container">
+        <p>
+          {title} - {author}{" "}
+        </p>
+        <button
+          data-testid="blog__toggle-expanded-btn"
+          onClick={toggleExpanded}
+        >
           show
         </button>
       </div>
     )
   } else {
     return (
-      <div style={blogStyle}>
+      <div data-testid="blog__container" style={blogStyle}>
         <p>
           {`${title} - ${author} `}
-          <button onClick={toggleExpanded}>hide</button>
+          <button
+            data-testid="blog__toggle-expanded-btn"
+            onClick={toggleExpanded}
+          >
+            hide
+          </button>
         </p>
 
         <p>{url}</p>
-        <p>
+        <p data-testid="blog__likes-display">
           likes {likes}
           <button
-            data-testid="btn-like"
-            onClick={(e) => handleUpdateBlog(e, blog, { likes: likes + 1 })}
+            data-testid="blog__like-btn"
+            onClick={() => updateBlog(blog, { likes: likes + 1 })}
           >
             like
           </button>
@@ -48,7 +57,12 @@ const Blog = ({ blog, handleUpdateBlog, deleteBlog, currentUser }) => {
           <em>{user.username}</em>
         </p>
         {user.id === currentUser.id && (
-          <button onClick={() => deleteBlog(blog)}>delete</button>
+          <button
+            data-testid="blog__delete-btn"
+            onClick={() => deleteBlog(blog)}
+          >
+            delete
+          </button>
         )}
       </div>
     )

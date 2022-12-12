@@ -18,7 +18,10 @@ const LoginForm = ({ onLogin }) => {
   }
 
   return (
-    <form onSubmit={(e) => onLogin(e, { username, password })}>
+    <form
+      data-testid="form-login"
+      onSubmit={(e) => onLogin(e, { username, password })}
+    >
       {Object.keys(data).map((fieldname) => (
         <FormField
           key={fieldname}
