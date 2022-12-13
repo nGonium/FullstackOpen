@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit';
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -19,36 +21,57 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject);
 
-const reducer = (state = initialState, action) => {
-  console.log('state now: ', state);
-  console.log('action', action);
-  switch (action.type) {
-    case 'VOTE':
-      return state.map((a) =>
-        action.data.id === a.id ? { ...a, votes: a.votes + 1 } : a
-      );
-    case 'PUSH_ANECDOTE':
-      return state.concat(asObject(action.data.content));
-    default:
-      return state;
-  }
-  // return state
-};
+const anecdoteSlice = createSlice({
+  initialState,
+  name: 'anecdotes',
+  reducers: {
+    incrementVote(state, action) {
+      const id = action.payload;
+      state.forEach((a) => {
+        if (a.id === id) a.votes++;
+      });
+    },
+    pushAnecdote(state, action) {
+      const content = action.payload;
+      state.push(asObject(content));
+    },
+  },
+});
 
-// Action creators
-// Take data, return action, consumer calls dispatch
-export const incrementVote = (id) => {
-  return {
-    type: 'VOTE',
-    data: { id },
-  };
-};
+export const { incrementVote, pushAnecdote } = anecdoteSlice.actions;
+export default anecdoteSlice.reducer;
 
-export const pushAnecdote = (content) => {
-  return {
-    type: 'PUSH_ANECDOTE',
-    data: { content },
-  };
-};
+// ### THE REDUX WAY, NOT RTK ###
+// const reducer = (state = initialState, action) => {
+//   console.log('state now: ', state);
+//   console.log('action', action);
+//   switch (action.type) {
+//     case 'VOTE':
+//       return state.map((a) =>
+//         action.data.id === a.id ? { ...a, votes: a.votes + 1 } : a
+//       );
+//     case 'PUSH_ANECDOTE':
+//       return state.concat(asObject(action.data.content));
+//     default:
+//       return state;
+//   }
+//   // return state
+// };
 
-export default reducer;
+// // Action creators
+// // Take data, return action, consumer calls dispatch
+// export const incrementVote = (id) => {
+//   return {
+//     type: 'VOTE',
+//     data: { id },
+//   };
+// };
+
+// export const pushAnecdote = (content) => {
+//   return {
+//     type: 'PUSH_ANECDOTE',
+//     data: { content },
+//   };
+// };
+//
+// export default reducer;
