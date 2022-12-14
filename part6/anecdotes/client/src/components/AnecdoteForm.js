@@ -1,12 +1,14 @@
+import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { pushAnecdote } from '../reducers/anecdoteReducer';
+import { createAnecdote } from '../reducers/anecdoteReducer';
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
 
-  const addAnecdote = (e) => {
+  const addAnecdote = async (e) => {
     e.preventDefault();
-    dispatch(pushAnecdote(e.target.anecdote.value));
+    const content = e.target.anecdote.value;
+    dispatch(createAnecdote(content));
   };
 
   return (
