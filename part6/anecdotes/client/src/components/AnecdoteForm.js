@@ -1,14 +1,15 @@
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer';
 
-const AnecdoteForm = () => {
-  const dispatch = useDispatch();
+const AnecdoteForm = ({ createAnecdote }) => {
+  // const dispatch = useDispatch();
 
   const addAnecdote = async (e) => {
     e.preventDefault();
     const content = e.target.anecdote.value;
-    dispatch(createAnecdote(content));
+    // dispatch(createAnecdote(content));
+    createAnecdote(content);
   };
 
   return (
@@ -25,4 +26,4 @@ const AnecdoteForm = () => {
   );
 };
 
-export default AnecdoteForm;
+export default connect(null, { createAnecdote })(AnecdoteForm);
