@@ -1,40 +1,64 @@
-const config = require('./utils/config');
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const mongoose = require('mongoose');
-require('express-async-errors');
+const router = require('express').Router();
 
-const blogsRouter = require('./controllers/blogs');
-const usersRouter = require('./controllers/users');
-const loginRouter = require('./controllers/login');
-const { errorHandler, userExtractor } = require('./utils/middleware');
-const logger = require('./utils/logger');
+const Blog = require('../models/blog');
+const User = require('../models/user');
 
-logger.info('connecting to', config.MONGODB_URI);
+router.get('/', async (request, response) => {
+  const notes = await Blog.find({})
+    .find({})
+    .populate('user', { username: 1, name: 1 });
 
-mongoose
-  .connect(config.MONGODB_URI)
-  .then(() => {
-    logger.info('connected to MongoDB');
-  })
-  .catch((error) => {
-    logger.error('error connection to MongoDB:', error.message);
+  response.json(notes);
+});
+
+router.post('/', async (request, response) => {
+  if (!request.user) {
+    return response.status(401).json({ error: 'token missing or invalid' });
+  }
+
+  const user = request.user;
+  const blog = new Blog({ ...request.body, user: user.id });
+
+  const savedBlog = await blog.save();
+
+  user.blogs = user.blogs.concat(savedBlog._id);
+  await user.save();
+
+  const blogToReturn = await Blog.findById(savedBlog._id).populate('user', {
+    username: 1,
+    name: 1,
   });
 
-app.use(cors());
-app.use(express.static('build'));
-app.use(express.json());
+  response.status(201).json(blogToReturn);
+});
 
-app.use('/api/login', loginRouter);
-app.use('/api/blogs', userExtractor, blogsRouter);
-app.use('/api/users', usersRouter);
+router.delete('/:id', async (request, response) => {
+  const blogToDelete = await Blog.findById(request.params.id);
+  if (!blogToDelete) {
+    return response.status(204).end();
+  }
 
-if (process.env.NODE_ENV === 'test') {
-  const testingRouter = require('./controllers/testing');
-  app.use('/api/testing', testingRouter);
-}
+  if (blogToDelete.user && blogToDelete.user.toString() !== request.user.id) {
+    return response.status(401).json({
+      error: 'only the creator can delete a blog',
+    });
+  }
 
-app.use(errorHandler);
+  await Blog.findByIdAndRemove(request.params.id);
 
-module.exports = app;
+  response.status(204).end();
+});
+
+router.put('/:id', async (request, response) => {
+  const blog = request.body;
+
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
+    new: true,
+    runValidators: true,
+    context: 'query',
+  }).populate('user', { username: 1, name: 1 });
+
+  response.json(updatedBlog);
+});
+
+module.exports = router;
