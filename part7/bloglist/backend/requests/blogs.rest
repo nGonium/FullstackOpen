@@ -1,0 +1,8 @@
+### Add comment to blog
+POST http://localhost:3000/api/blogs/63f4c39e6757874f19ff0f5b/comments
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlciIsImlkIjoiNjNmNGMzNGI2NzU3ODc0ZjE5ZmYwZjRlIiwiaWF0IjoxNjc2OTg2NTcxfQ.P3SDXo4gC9deaG3Wx72EF7XAKmuSDmWQv3EYgwOR8No
+Content-Type: application/json
+
+{
+  "comment": "Hello World! 2"
+}
