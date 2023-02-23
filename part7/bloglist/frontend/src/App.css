@@ -1,0 +1,54 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+}
+
+h1,
+h2 {
+    text-transform: capitalize;
+    color: #0a4cb5;
+}
+
+a {
+    color: #0a4cb5;
+    text-decoration: none;
+}
+
+a:hover {
+    opacity: 80%;
+}
+
+button {
+    color: white;
+    background-color: #0a4cb5;
+    border: none;
+    border-radius: 4px;
+    margin: 0 1rem;
+    padding: 0.25rem 0.5rem;
+}
+
+button:hover {
+    opacity: 70%;
+    cursor: pointer;
+}
+
+main {
+    padding: 1rem;
+}
+
+nav {
+    padding: 0.5rem;
+    color: white;
+    background-color: #292929;
+}
+
+nav a {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem;
+    color: white;
+}
+
+nav a:visited {
+    color: white;
+}

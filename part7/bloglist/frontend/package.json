@@ -42,6 +42,10 @@
         ]
     },
     "proxy": "http://localhost:3003",
+    "allowedHosts": [
+        "127.0.0.1",
+        "localhost"
+    ],
     "devDependencies": {
         "@testing-library/user-event": "^13.5.0",
         "cypress": "^9.4.1",

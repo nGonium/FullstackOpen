@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useReducer, useContext } from 'react'
+import { useRef, useReducer, useContext } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom'
 
@@ -13,8 +13,8 @@ import UserContext from './features/user/UserContext'
 import BlogView from './pages/BlogView'
 
 import blogService from './services/blogs'
-import loginService from './services/login'
-import userService from './services/user'
+
+import './App.css'
 
 const notificationReducer = (state, action) => {
     switch (action.type) {
@@ -28,10 +28,8 @@ const notificationReducer = (state, action) => {
 }
 
 const App = () => {
-    // const [blogs, setBlogs] = useState([])
     const queryClient = useQueryClient()
     const blogQuery = useQuery('blogs', blogService.getAll)
-    // const [user, setUser] = useState(null)
     const [notification, dispatchNotification] = useReducer(
         notificationReducer,
         null
@@ -77,9 +75,6 @@ const App = () => {
         {
             onSuccess: (data) => {
                 notify(`you liked '${data.title}' by ${data.author}`)
-                // const updatedBlogs = blogs
-                //     .map((b) => (b.id === id ? updatedBlog : b))
-                //     .sort(byLikes)
                 queryClient.invalidateQueries('blogs')
             },
         }
@@ -125,50 +120,56 @@ const App = () => {
                     {user.name} logged in
                     <button onClick={logout}>logout</button>
                 </nav>
-                <h2>blogs</h2>
-                <Notification notification={notification} />
-                <Routes>
-                    <Route
-                        path="/users/:id"
-                        element={<UserHome query={blogQuery} />}
-                    />
-                    <Route path="/users" element=<UsersList /> />
-                    <Route
-                        path="/blogs/:id"
-                        element=<BlogView
-                            onLikeBlog={handleLikeBlog}
-                            query={blogQuery}
+                <main>
+                    <h2>Blog App</h2>
+                    <Notification notification={notification} />
+                    <Routes>
+                        <Route
+                            path="/users/:id"
+                            element={<UserHome query={blogQuery} />}
                         />
-                    />
-                    <Route
-                        path="/"
-                        element={
-                            <>
-                                <Togglable
-                                    buttonLabel="new note"
-                                    ref={blogFormRef}
-                                >
-                                    <NewBlogForm onCreate={handleCreateBlog} />
-                                </Togglable>
-                                {blogQuery.isLoading ? (
-                                    <div>...loading</div>
-                                ) : (
-                                    <div id="blogs">
-                                        {blogs.map((blog) => (
-                                            <Blog
-                                                key={blog.id}
-                                                blog={blog}
-                                                likeBlog={handleLikeBlog}
-                                                removeBlog={handleRemoveBlog}
-                                                user={user}
-                                            />
-                                        ))}
-                                    </div>
-                                )}
-                            </>
-                        }
-                    />
-                </Routes>
+                        <Route path="/users" element=<UsersList /> />
+                        <Route
+                            path="/blogs/:id"
+                            element=<BlogView
+                                onLikeBlog={handleLikeBlog}
+                                query={blogQuery}
+                            />
+                        />
+                        <Route
+                            path="/"
+                            element={
+                                <>
+                                    <Togglable
+                                        buttonLabel="new note"
+                                        ref={blogFormRef}
+                                    >
+                                        <NewBlogForm
+                                            onCreate={handleCreateBlog}
+                                        />
+                                    </Togglable>
+                                    {blogQuery.isLoading ? (
+                                        <div>...loading</div>
+                                    ) : (
+                                        <div id="blogs">
+                                            {blogs.map((blog) => (
+                                                <Blog
+                                                    key={blog.id}
+                                                    blog={blog}
+                                                    likeBlog={handleLikeBlog}
+                                                    removeBlog={
+                                                        handleRemoveBlog
+                                                    }
+                                                    user={user}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
+                                </>
+                            }
+                        />
+                    </Routes>
+                </main>
             </div>
         </BrowserRouter>
     )
