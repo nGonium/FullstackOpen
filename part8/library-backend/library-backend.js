@@ -117,7 +117,7 @@ const typeDefs = `
 
     editAuthor(
       name: String!
-      setBornTo: Int!
+      setBornTo: Int
     ): Author
     
   }
