@@ -4,13 +4,21 @@
   "description": "",
   "main": "library-backend.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.4.0",
+    "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.10.1",
+    "mongoose-unique-validator": "^3.1.0",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
   }
 }
