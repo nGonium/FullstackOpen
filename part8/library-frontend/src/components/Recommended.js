@@ -1,25 +1,24 @@
 import { useState } from 'react';
 import useGetAllBooks from '../hooks/useGetAllBooks';
+import useMe from '../hooks/useMe';
 
-const Books = (props) => {
+const Recommended = ({ show }) => {
+  const meQuery = useMe();
   const result = useGetAllBooks();
-  const [genreFilter, setGenreFilter] = useState(null);
 
-  if (!props.show) {
+  if (!show) {
     return null;
   }
   const books = result.loading ? [] : result.data.allBooks;
-
-  const genres = [
-    ...new Set(
-      books.reduce((prev, current) => prev.concat(current.genres), [])
-    ),
-  ];
+  const favoriteGenre = result.loading ? null : meQuery.data.me.favoriteGenre;
 
   return (
     <div>
-      <h2>books</h2>
-
+      <h2>recommendations</h2>
+      <p>
+        books in your favorite genre{' '}
+        {<strong>{favoriteGenre}</strong> ?? <em>...loading</em>}
+      </p>
       <table>
         <tbody>
           <tr>
@@ -29,7 +28,7 @@ const Books = (props) => {
           </tr>
           {books
             .filter((book) =>
-              genreFilter ? book.genres.includes(genreFilter) : true
+              favoriteGenre ? book.genres.includes(favoriteGenre) : true
             )
             .map((a) => (
               <tr key={a.title}>
@@ -40,15 +39,8 @@ const Books = (props) => {
             ))}
         </tbody>
       </table>
-      <div>
-        {genres.map((genre) => (
-          <button key={genre} onClick={() => setGenreFilter(genre)}>
-            {genre}
-          </button>
-        ))}
-      </div>
     </div>
   );
 };
 
-export default Books;
+export default Recommended;

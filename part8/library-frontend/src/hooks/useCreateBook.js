@@ -15,10 +15,6 @@ export const CREATE_BOOK = gql`
       published: $published
       genres: $genres
     ) {
-      title
-      author
-      published
-      genres
       id
     }
   }
@@ -27,5 +23,6 @@ export const CREATE_BOOK = gql`
 export default function useCreateBook() {
   return useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: GET_AUTHORS }, { query: GET_BOOKS }],
+    onError: (error) => console.warn(error),
   });
 }

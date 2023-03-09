@@ -53,13 +53,13 @@ const typeDefs = `
     title: String!
     published: Int!
     author: Author!
-    _id: ID!
+    id: ID!
     genres: [String!]!
   }
 
   type Author {
     name: String!
-    _id: ID!
+    id: ID!
     born: Int
     bookCount: Int
   }
@@ -115,7 +115,7 @@ const resolvers = {
           });
         }
       }
-      const newBook = new Book({ ...args, author: author._id });
+      const newBook = new Book({ ...args, author: author.id });
       try {
         await newBook.save();
       } catch (error) {
@@ -127,7 +127,8 @@ const resolvers = {
           },
         });
       }
-      return { ...newBook, author };
+
+      return newBook.populate('author');
     },
 
     editAuthor: async (root, args, context) => {
@@ -198,8 +199,7 @@ const resolvers = {
   },
 
   Author: {
-    // bookCount: (root) => Book.collection.countDocuments({ $where: {}})
-    //   books.filter((book) => book.author === root.name).length,
+    bookCount: async (root, args) => await Book.count({ author: root.id }),
   },
 };
 
@@ -217,6 +217,7 @@ startStandaloneServer(server, {
         auth.substring(7),
         process.env.JWT_SECRET
       );
+      // console.log(`authenticated user "${decodedToken.username}"`);
       // TODO: Error handling if user removed since jwt
       const currentUser = await User.findById(decodedToken.id);
       return { currentUser };
