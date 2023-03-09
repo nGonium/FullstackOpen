@@ -1,9 +1,7 @@
-import { useState } from 'react';
 import useGetAllBooks from '../hooks/useGetAllBooks';
 
 const Books = (props) => {
   const result = useGetAllBooks();
-  const [genreFilter, setGenreFilter] = useState(null);
 
   if (!props.show) {
     return null;
@@ -27,22 +25,28 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books
-            .filter((book) =>
-              genreFilter ? book.genres.includes(genreFilter) : true
-            )
-            .map((a) => (
-              <tr key={a.title}>
-                <td>{a.title}</td>
-                <td>{a.author.name}</td>
-                <td>{a.published}</td>
-              </tr>
-            ))}
+          {books.map((a) => (
+            <tr key={a.title}>
+              <td>{a.title}</td>
+              <td>{a.author.name}</td>
+              <td>{a.published}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
       <div>
+        <button
+          onClick={async () => await result.refetch({ genres: undefined })}
+        >
+          Clear
+        </button>
         {genres.map((genre) => (
-          <button key={genre} onClick={() => setGenreFilter(genre)}>
+          <button
+            key={genre}
+            onClick={async () => {
+              await result.refetch({ genres: genre });
+            }}
+          >
             {genre}
           </button>
         ))}
