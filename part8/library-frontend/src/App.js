@@ -5,6 +5,7 @@ import Books from './components/Books';
 import Login from './components/Login';
 import NewBook from './components/NewBook';
 import Recommended from './components/Recommended';
+import useBookAdded from './hooks/useBookAdded';
 
 const App = () => {
   const [token, setToken] = useState(() =>
@@ -18,6 +19,8 @@ const App = () => {
     localStorage.clear();
     client.resetStore();
   };
+
+  useBookAdded();
 
   return (
     <div>

@@ -72,3 +72,26 @@ const [createPerson] = useMutation(CREATE_PERSON, {
 ```
 
 Note that some requests are valid (Apollo can resolve them without throwing an error) but may return `null` rather than a desired entity. You may wish to display your own error to the user in the event `null` is returned. This can be done in a `useEffect` hook dependent on `results.data`. Note `eslint` may throw a warning which can be suppressed with the `//eslint-disable-line` directive.
+
+## Subscriptions
+
+Subscriptions use a WebSocket connection to allow clients to subscribe to a graphql server. The server updates the client when a change occurs.
+
+First install the dependecies for subscriptions on the server
+
+```
+npm install graphql-ws ws @graphql-tools/schema
+```
+
+Subscriptions are a type just like `Query` and `Mutation` but instead of resulting in an HTTP response they subscribe the client to the server, listening for an event. This is done by creating a resolver that takes the name of the event. When you want to fire the event, use `pubsub.publish`.
+
+```js
+const typeDefs = `
+  type Mutation addComment (content: String!) {
+    
+  }
+  type Subscription 
+`;
+
+const resolvers = {};
+```

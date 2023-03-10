@@ -3,6 +3,13 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const schema = new mongoose.Schema({
+  books: [
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Book',
+      default: [],
+    },
+  ],
   name: {
     type: String,
     required: true,
