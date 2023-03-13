@@ -1,0 +1,11 @@
+###
+POST http://localhost:3001/api/patients 
+Content-Type: application/json
+
+{
+  "name": "Jamie Lannister",
+  "dateOfBirth": "1800-01-01",
+  "ssn": "012345-678A",
+  "gender": "male",
+  "occupation": "Lover"
+}
