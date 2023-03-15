@@ -43,7 +43,7 @@ const AddDiaryEntryForm = ({ addDiaryEntry }: AddDiaryEntryProps) => {
       <fieldset>
         <legend>visibility</legend>
         {Object.values(Visibility).map((v) => (
-          <label>
+          <label key={v}>
             {v}
             <input
               name="visibility"
@@ -58,7 +58,7 @@ const AddDiaryEntryForm = ({ addDiaryEntry }: AddDiaryEntryProps) => {
       <fieldset>
         <legend>weather</legend>
         {Object.values(Weather).map((v) => (
-          <label>
+          <label key={v}>
             {v}
             <input
               name="weather"
