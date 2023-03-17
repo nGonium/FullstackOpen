@@ -1,4 +1,11 @@
-###
+### PATIENTS
+### Get all
+GET http://localhost:3001/api/patients 
+
+### Get first
+GET http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667
+
+### Post new 
 POST http://localhost:3001/api/patients 
 Content-Type: application/json
 
@@ -8,4 +15,18 @@ Content-Type: application/json
   "ssn": "012345-678A",
   "gender": "male",
   "occupation": "Lover"
+}
+
+### PATIENT/ENTRY
+### Post new
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries 
+Content-Type: application/json
+
+{
+  "type": "HealthCheck",
+  "description": "New entry successful!",
+  "date": "2000-01-01",
+  "specialist": "Dr Test",
+  "diagnosisCodes": ["AB00", "CD11"],
+  "healthCheckRating": "2"
 }
