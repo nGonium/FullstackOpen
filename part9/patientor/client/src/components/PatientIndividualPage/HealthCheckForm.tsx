@@ -55,7 +55,6 @@ const HealthCheckForm: React.FC<Props> = ({ diagnoses }) => {
     startDate: nowFormatted,
     endDate: nowFormatted,
   });
-  const [diagnosesString, setDiagnosesString] = useState('');
   const [diagnosesCodes, setDiagnosesCodes] = useState<Diagnosis['code'][]>([]);
   if (!patientId) {
     console.error('Incorrect use of component');
@@ -74,13 +73,11 @@ const HealthCheckForm: React.FC<Props> = ({ diagnoses }) => {
           message: `Created new entry: ${createdEntry.description}`,
         });
       } catch (error) {
-        console.log('failure');
         if (axios.isAxiosError(error)) {
           setFormNotification({ type: 'error', message: error.response?.data });
           return;
         }
-        console.dir(error);
-        setFormNotification({ type: 'error', message: 'Something went wrong' });
+        setFormNotification({ type: 'error', message: `Something went wrong` });
       }
     };
     switch (type) {
