@@ -45,7 +45,7 @@ export const toNewEntry = (object: unknown) => {
   switch (object.type) {
     case 'HealthCheck': {
       if (!('healthCheckRating' in object)) {
-        throw new Error('Missing parameter');
+        throw new Error('Something went wrong: missing healthCheckRating');
       }
       const entry: NewHealthCheckEntry = {
         ...baseEntry,
@@ -169,11 +169,16 @@ const parseDate = (date: unknown): string => {
   return date;
 };
 
+console.log(Object.values(HealthCheckRating));
+
 const isHealthCheckRating = (param: number): param is HealthCheckRating =>
   Object.values(HealthCheckRating).includes(param);
 const parseHealthCheckRating = (param: unknown): HealthCheckRating => {
+  if (!isNumber(param)) {
+    throw new Error(`healthCheckRating of invalid type: ${typeof param}`);
+  }
   if (!isNumber(param) || !isHealthCheckRating(param)) {
-    throw Error('Invalid value for healthCheckRating');
+    throw Error(`Value of healthCheckRating incorrect: ${param}`);
   }
   return param;
 };

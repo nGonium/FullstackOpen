@@ -33,8 +33,8 @@ router.post('/:id/entries', (req, res) => {
     patient.entries.push(createdEntry);
     res.status(201).send(createdEntry);
   } catch (error) {
-    let errorMessage = 'Error';
-    if (error instanceof Error) errorMessage += error.message;
+    let errorMessage = 'Something went wrong';
+    if (error instanceof Error) errorMessage = error.message;
     res.status(400).send(errorMessage);
   }
 });

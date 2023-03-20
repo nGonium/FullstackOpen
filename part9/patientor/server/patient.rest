@@ -24,7 +24,7 @@ Content-Type: application/json
 
 {
   "type": "HealthCheck",
-  "description": "New entry successful!",
+  "description": "New entry successful! 2",
   "date": "2000-01-01",
   "specialist": "Dr Test",
   "diagnosisCodes": ["AB00", "CD11"],

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import patientService from '../../services/patients';
-import { Patient } from '../../types';
+import { Diagnosis, Patient } from '../../types';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import MedicalEntries from './MedicalEntries';
 import HealthCheckForm from './HealthCheckForm';
+import diagnosesService from '../../services/diagnoses';
 
 const PatientIndividualPage = () => {
   const { id: patientId } = useParams<{ id: string }>();
@@ -15,6 +16,10 @@ const PatientIndividualPage = () => {
     if (patientId === undefined) return;
     patientService.getById(patientId).then((patient) => setPatient(patient));
   }, [patientId]);
+  const [diagnosesDictionary, setDiagnosesDictiory] = useState<Diagnosis[]>([]);
+  useEffect(() => {
+    diagnosesService.getAll().then((data) => setDiagnosesDictiory(data));
+  });
 
   if (!patient)
     return (
@@ -48,8 +53,8 @@ const PatientIndividualPage = () => {
         <br />
         occupation: {occupation}
       </p>
-      <HealthCheckForm />
-      <MedicalEntries entries={entries} />
+      <HealthCheckForm diagnoses={diagnosesDictionary} />
+      <MedicalEntries entries={entries} diagnoses={diagnosesDictionary} />
     </>
   );
 };

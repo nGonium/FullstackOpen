@@ -1,21 +1,14 @@
-import { useEffect, useState } from 'react';
-import diagnosesService from '../../services/diagnoses';
 import { Diagnosis, Entry } from '../../types';
-// import { Entry } from '../../types';
 import React from 'react';
 import EntryDetails from './EntryDetails';
-import { Container, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 
 interface Props {
   entries: Entry[];
+  diagnoses: Diagnosis[];
 }
 
-const MedicalEntries = ({ entries }: Props) => {
-  const [diagnosesDictionary, setDiagnosesDictiory] = useState<Diagnosis[]>();
-  useEffect(() => {
-    diagnosesService.getAll().then((data) => setDiagnosesDictiory(data));
-  });
-
+const MedicalEntries = ({ entries, diagnoses: diagnosesDictionary }: Props) => {
   const getDiagnoses = (diagnosisCodes: Diagnosis['code'][]): Diagnosis[] => {
     if (!diagnosesDictionary)
       return diagnosisCodes.map((code) => ({ code, name: '' }));
